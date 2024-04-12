@@ -1,0 +1,107 @@
+\section*{Cheat Sheet}
+
+\subsubsection*{Medici\'on de tiempos en C++}
+
+Pueden utilizar como base el siguiente código para realizar mediciones de tiempo.
+\begin{scriptsize}
+\begin{verbatim}
+#include <chrono>
+
+using namespace std;
+
+auto start = chrono::high_resolution_clock::now();
+auto finish = chrono::high_resolution_clock::now();
+auto d = chrono::duration_cast<chrono::nanoseconds> (finish - start).count();
+cout <<"total time "<< duration << " [ns]" << " \n";
+\end{verbatim}
+\end{scriptsize}
+\textbf{Nota:} Si estima necesario puede usar \textit{milliseconds} en lugar de \textit{nanoseconds}.
+
+\subsubsection*{Definiciones asintóticas}
+
+Dadas dos funciones $f,g:\N\to\R^+$. Se denota:
+\begin{enumerate}
+    \item $f(n)=\Ot{g(n)}$ si $\exists 
+    c>0,n_0\in\N,\forall n\geq n_0\,:\,f(n)\leq cg(n)$. En este caso, $f$ es acotada superiormente de manera asintótica por $g$.
+    
+    \item $f(n)=\Omega(g(n))$ si $\exists c>0,n_0\in\N,\forall n\geq n_0\,:\,cg(n)\leq f(n)$. En este caso, $f$ es acotada inferiormente de manera asintótica por $g$.
+    
+    \item $f(n)=\Theta(g(n))$ si $\exists c_1,c_2>0,n_0\in\N,\forall n\geq n_0\,:\,c_1g(n)\leq f(n)\leq c_2 g(n)$. En este caso, $g$ es una cota ajustada asintóticamente de $f$.
+
+    \item $f(n)=o(g(n))$ si $\forall c>0,\exists n_0\in\N,\forall n\geq n_0\,:\,f(n)\leq cf(n)$. En este caso, $f$ crece estrictamente más lento que $g$.
+
+    \item $f(n)=\omega(g(n))$ si $\forall c>0,\exists n_0\in\N,\forall n\geq n_0\,:\,g(n)\leq cf(n)$. En este caso, $f$ crece estrictamente más rápido que $g$.
+\end{enumerate}
+
+\subsubsection*{Propiedades del comportamiento asintótico}
+Sean dos funciones $f,g:\N\to\R^+$. Entonces se tienen las siguientes propieadaes:
+\begin{enumerate}
+    \item $f(n)=\Theta(g(n)) \Longleftrightarrow f(n)=\Ot{g(n)} \wedge f(n)=\Omega(g(n))$.
+    \item $f(n)=o(g(n)) \Longrightarrow f(n)=\Ot{g(n)}$.
+    \item $f(n)=\omega(g(n)) \Longrightarrow f(n)=\Omega(g(n))$.
+    \item Si
+    $$
+    \lim_{n\to+\infty}\dfrac{f(n)}{g(n)}=+\infty,
+    $$
+    entonces $f(n)\not=\Ot{g(n)}$ y $f(n)=\Omega(g(n))$.
+    \item Si
+    $$
+    \lim_{n\to+\infty}\dfrac{f(n)}{g(n)}=0,
+    $$
+    entonces $f(n)=\Ot{g(n)}$ y $f(n)\not=\Omega(g(n))$.
+\end{enumerate}
+
+\subsubsection*{Regla de L'Hôpital}
+
+La regla de L'Hôpital nos dice que si $f,g$ son funciones diferenciables en un intervalo abierto $I$, excepto posiblemente en un punto $c\in I$, si 
+$$
+\lim_{x\to c} f(x) = \lim_{x\to c} g(x) = 0\text{ ó }\pm\infty,
+$$
+y $g'(x)\not=0$ para todo $x\in I\setminus\{c\}$ y el límite $\lim_{x\to c} \dfrac{f'(x)}{g'(x)}$ existe, entonces
+$$
+\lim_{x\to c} \dfrac{f(x)}{g(x)} = \lim_{x\to c} \dfrac{f'(x)}{g'(x)}.
+$$
+
+De esta forma podemos evaluar ciertos límites que toman la forma $0/0$ o $\infty/\infty$ utilizando las derivadas de las funciones.
+
+
+\subsubsection*{Propiedades de exponenciales}
+Sean $a>0$ y $m,n\in\R$. Entonces se cumplen las siguientes identidades:
+\begin{enumerate}
+    \item $a^0=1$,
+    \item $a^1=1$,
+    \item $a^{-1} = (1/a)$,
+    \item $(a^m)^n = a^{mn}$,
+    \item $(a^m)^n = (a^{n})^m$,
+    \item $a^na^m = a^{n+m}$.
+\end{enumerate}
+
+
+También se tiene la siguiente desigualdad para $x\in\R$:
+\begin{equation*}
+    1+x \leq e^x,
+\end{equation*}
+donde $e=2.718...$ es el número de Euler, la base del logaritmo natural. 
+
+
+\subsubsection*{Propiedades de logaritmos}
+Sean $a,b,c> 0$, entonces
+\begin{enumerate}
+    \item $a=b^{\log_ba}$,
+    \item $\log_c(ab)=\log_c(a) + \log_c(b)$,
+    \item $\log_b(a^n) = n\log_b a$,
+    \item $\log_ba = \dfrac{\log_ca}{\log_cb}$,
+    \item $\log_b(1/a) = -\log_ba$,
+    \item $\log_ba = (\log_ab)^{-1}$,
+    \item $a^{\log_bc}=c^{\log_ba}$,
+\end{enumerate}
+donde todas las bases se asumen distintas de 1.
+
+También se tiene la siguiente desigualdad para $x>-1$:
+\begin{equation*}
+    \dfrac{x}{1+x} \leq \ln(1+x)\leq x,
+\end{equation*}
+donde la igualdad sólo se cumple para $x=0$.
+
+\subsubsection*{Más porpiedades}
+Para revisar más notaciones y propiedades puede revisar el capítulo \textit{3.3 Standard notations and common functions} del libro guía Introduction to algorithms.
