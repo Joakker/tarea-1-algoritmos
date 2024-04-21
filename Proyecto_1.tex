@@ -75,7 +75,7 @@ Determine justificadamente si las siguientes afirmaciones son verdaderas o falsa
 \begin{itemize}
   \item $(10^7)^{120!}$ \--- Equivalente a $O(1)$
 
-  \item $\log \log n^3$ \--- Está entre $O(1)$ y $O(log(n)$
+  \item $\log \log n^3$ \--- Está entre $O(1)$ y $O(log(n))$
   \item $\log^2(n)	$   \--- Mayor a $O(log(n))$
   \item $\dfrac{3}{2}n$ \--- Equivalente a $O(n)$
   \item $n^2\log^2(n)$  \--- Mayor a $O(nlog(n))$
@@ -109,85 +109,133 @@ Determine justificadamente si las siguientes afirmaciones son verdaderas o falsa
 
 \begin{enumerate}
   \item $T(n) = T(n-1) + log(n)$ su solución es $T(n) = \Theta(n\log(n))$
+
+	\begin{align*}
+		T(n) &= T(n - 1) + \log(n)											\\
+		T(n) &= T(n - 2) + \log(n) + \log(n)						\\
+		T(n) &= T(n - 3) + \log(n) + \log(n) + \log(n)	\\
+		     &  \vdots																\\
+		T(n) &= T(n - n) + n\log(n)										\\
+		T(n) &= C + n \log(n)
+	\end{align*}
+	Donde $C$ es la complejidad de $T(0)$.
+
+	Luego, $T(n)=\Theta(f(n)) \Leftrightarrow{} \exists c_1, c_2 \in \Re \backslash c_1 f(n) \leq T(n) \leq c_2 f(n), \forall n \geq n_0 $. Pero como la expansión de $T(n)=n\log(n)$ es igual al $f(n)=n\log(n)$ que se usa para acotarla, $T(n)=\Theta(n\log(n))$ se cumple $\forall c_1, c_2, n_0 \in \Re, c_1 < 1, c_2 > 1, n_0 \geq 0$. $\therefore$ la cota dada es cierta. 
+
   \item $T(n) = T(n/2) + T(n/4) + T(n/16) +cn$ su solución es $T(n) = \Theta(n)$
+  
+  \begin{align*}
+  	T(n) &= T(\frac{n}{2}) + T(\frac{n}{4}) + T(\frac{n}{16}) \\
+  	T(n) &= T(\frac{n}{4}) + T(\frac{n}{8}) + T(\frac{n}{32}) + T(\frac{n}{4}) + T(\frac{n}{16}) &= 2T(\frac{n}{4}) + T(\frac{n}{8}) + T(\frac{n}{16}) + T(\frac{n}{32}) \\
+  	T(n) &= 2T(\frac{n}{8}) + 2T(\frac{n}{16}) + 2T(\frac{n}{64}) + T(\frac{n}{8}) + T(\frac{n}{16}) + T(\frac{n}{32}) &= 3T(\frac{n}{8}) + 3T(\frac{n}{16}) + 3T(\frac{n}{64}) + T(\frac{n}{32}) \\
+  	T(n) &= 3T(\frac{n}{16}) + 3T(\frac{n}{32})
+  	\vdots \\
+  	T(n) = 
+  \end{align*}
 \end{enumerate}
 
 
-\item \textbf{[6 puntos]} Proporcione un análisis asintótico de peor caso en notación $\Ot{}$ para el tiempo de ejecución de los siguientes fragmentos de programa.
+\item \textbf{[6 puntos]} Proporcione un análisis asintótico de peor caso en notación $O(t)$ para el tiempo de ejecución de los siguientes fragmentos de programa.
 
-\begin{scriptsize}
-\begin{tabular}{ll}
-\begin{minipage}{3in}
 \begin{verbatim}
 
-(a) ============================================================================================================
+(a) =======================================================
 
-for( int i = 1; i <= n; i *= 2 ) {         // O(log n)                                         // O((n / 2) log n + (n^2 / 2) log n)
-  for( int j = 1; j < n; j += 2 ) {        // O(n/2)           // O((n / 2) log n + (n^2 / 2)) //
-    f();                                   // O(log n)         //                              //
-    for( int k = 1; k < 3; k *= 2 ) {      // O(1)     // O(n) //                              //
-      g();                                 // O(n)     //      //                              //
-    }                                                  //      //                              //
-  }                                                            //                              //
-}                                                                                              //
-
-O(n^2 log n)
-
-(b) ============================================================================================================
-
-for( int i = 1; i <= n; i *= 2 ) {         // O(log n)                                   // O(2 n^2 log^2 n + n log n)
-  for( int j = 1; j < n; j *= 2 ) {        // O(log n)                 // O(2 n^2 log n) //
-    for( int k = 1; k < n; k += 1 ) {      // O(n)         // O(2 n^2) //                //
-      f();                                 // O(n)         //          //                //
-      for( int l = 1; l < 100; k += 1 ) {  // O(1) // O(n) //          //                //
-        g();                               // O(n) //      //          //                //
-      }                                            //      //          //                //
-    }                                                      //          //                //
-  }                                                                    //                //
-  h();                                     // O(n)                                       //
+for( int i = 1; i <= n; i *= 2 ) {         // O(log n)
+  for( int j = 1; j < n; j += 2 ) {        // O(n/2)
+    f();                                   // O(log n)
+    for( int k = 1; k < 3; k *= 2 ) {      // O(1)
+      g();                                 // O(n)
+    }
+  }
 }
-
-O(n^2 log^2 n)
-
-(c) ============================================================================================================
-
-void f(int n) {
-  if( n > 1 ) {                                                          // O((4 n^2) / 3)
-    f(n/3);                                // O((n/3)^2) // O((n^2) / 3) //
-    f(n/3);                                // O((n/3)^2) //              //
-    f(n/3);                                // O((n/3)^2) //              //
-    for ( int i = 0; i < n; i++ ) {        // O(n)       // O(n^2)       //
-      ProcesaA();                          // O(n)       //              //
-    }                                                    //              //
-  } else {                                                               //
-      ProcesaB();                          // O(1)                       //
-  }                                                                      //
-}
-
-O(n^2)
 \end{verbatim}
 
-\end{minipage}
-\end{tabular}
-\end{scriptsize}
+Luego, multiplico los loops $\log n * \frac{n}{2} * (\log n + 1 * n) = \frac{\log^2 n + n^2\log n}{2}$. Pero para los propósitos del análisis asintótico, me deshago del denominador, y en caso de una suma, me quedo con el mayor sumando de los dos. En éste caso, $n^2 \log n$, ya que $\forall n \geq 1$, $n > \log n \Rightarrow n^2 > \log^2 n $, $\therefore$ la complejidad temporal es $O(n^2 \log n)$.
 
-\clearpage
+\begin{verbatim}
+(b) =======================================================
+
+for( int i = 1; i <= n; i *= 2 ) {         // O(log n)
+  for( int j = 1; j < n; j *= 2 ) {        // O(log n)
+    for( int k = 1; k < n; k += 1 ) {      // O(n)
+      f();                                 // O(n)
+      for( int l = 1; l < 100; k += 1 ) {  // O(1)
+        g();                               // O(n)
+      }
+    }
+  }
+  h();                                     // O(n)
+}
+\end{verbatim}
+
+Luego multiplico los loops $\log n * \log n * n * (n + 1 * n) = n \log^2 n + n^2 \log^2 n$. Me deshago del sumando menor, que es $n \log^2 n$ ya que $\forall n > 1, n^2 > n$. Luego me queda que la complejidad final del algoritmo es $O(n^2 \log^2 n)$
+
+\begin{verbatim}
+(c) =======================================================
+
+void f(int n) {
+  if( n > 1 ) {
+    f(n/3);
+    f(n/3);
+    f(n/3);
+    for ( int i = 0; i < n; i++ ) {
+      ProcesaA(); // O(n)
+    }
+  } else {
+      ProcesaB(); // O(1)
+  }
+}
+\end{verbatim}
+
+El análisis equivalente es $T(n) = 3T(\frac{n}{3})+n^2$. Luego puedo usar el método de sustitución:
+
+\begin{align*}
+	T(n) &= 3T(\frac{n}{3}) + n^2 \\
+	T(n) &= 3(3T(\frac{n}{3^2}) + \frac{n^2}{3^2}) + \frac{n^2}{3^0} \\
+	T(n) &= 3^2(3T(\frac{n}{3^3}) + \frac{n^2}{3^4}) + \frac{n^2}{3^1} + \frac{n^2}{3^0} \\
+	T(n) &= 3^3(3T(\frac{n}{3^4}) + \frac{n^2}{3^6}) + \frac{n^2}{3^2} + \frac{n^2}{3^1} + \frac{n^2}{3^0} \\
+	\vdots \\
+	T(n) &= 3^kT(\frac{n}{3^k})+n^2\sum_{i=0}^{k-1}\frac{1}{3^i}
+\end{align*}
+
+Donde $k=\lfloor \log_3 n \rfloor$. Ahora, expandiendo el segundo sumando:
+
+\begin{align*}
+	n^2\sum_{i=0}^{k-1}\frac{1}{3^i} &= \frac{1-\frac{1}{3^k}}{1-\frac{1}{3}} \\
+	&=\frac{3n^2}{2}(1-\frac{1}{n})\\
+	&=\frac{3}{2}n^2-\frac{3}{2}n
+\end{align*}
+
+El cual es $\Theta(n^3)$, por lo que, por el teorema maestro 3° caso, $3f(\frac{9}{3})<\frac{f(9)}{2} \Leftrightarrow 27 < 108$, queda en $\Theta(n^2)$.
 
 \item \textbf{[6 puntos]}Determine qué realiza el siguiente algoritmo, demuestre que es correcto y determine su complejidad asintótica.
 
 \begin{scriptsize}
 \begin{verbatim}
 int F(int* A, int n, float x){
-  p=0;
-  for i=0 to n{
-    p = A[n-i] + x*p;
+  p = 0;
+  for i = 0 to n {
+    p = A[n-i] + x * p;
   }
   return p;
 }
 \end{verbatim}
 \end{scriptsize}
 
-\textit{Indicación:} El arreglo $A$ de tamaño $n$ representa los coeficientes de un polinomio $p(x)=\sum_{i=0}^na_ix^i$.
+\textit{Indicación:} El arreglo $A$ de tamaño $n+1$ representa los coeficientes de un polinomio $p(x)=\sum_{i=0}^na_ix^i$.
+
+\textbf{Respuesta} El algoritmo calcula el polinomio de grado $n$, cuyos coeficientes, como se indica arriba, se encuentran en el arreglo $A$. Además tiene una complejidad $O(n)$ ya que depende del largo $n+1$ del arreglo $A$ sobre el cual se está iterando.
+
+\textbf{Demostración} Simplemente expandimos el loop:
+
+\begin{itemize}
+	\item $p_0$ = $A_n + x * 0$ \textit{Equivalente a un polinomio grado 0}
+	\item $p_1$ = $A_{n-1} + x * p_0$ = $x^0 * A_{n-1} + x^1 * A_n$ \textit{Equivalente a un polinomio de grado 1}
+	\item $p_2$ = $A_{n-2} + x * p_1$ = $x^0 * A_{n-2} + x^1 * A_{n-1} + x^2 * A_n$ \textit{Equivalente a un polinomio de grado 2}
+\end{itemize}
+
+Así, nos damos cuenta de que para un arreglo $A$ de largo $n+1$ (polinomio de grado $n$), $\forall{} i \in [0, n]$, el elemento $i$-ésimo tiene la forma $A_{i}*x^i$, lo cual cumple con la definición del polinomio dada arriba.
 
 \item \textbf{[7 puntos]} Considere un conjunto de puntos tridimensionales con coordenadas reales con signo. Reporte la distancia mínima entre dos puntos. Para ello utilizaremos la distancia euclidiana entre dos puntos. Dados dos puntos $p_1(x_1,y_1,z_1)$ y $p_2(x_2,y_2,z_2)$, el cálculo de la distancia euclidiana es la siguiente:
 
@@ -231,7 +279,7 @@ int F(int* A, int n, float x){
 %  \item Diseñe e implemente un algoritmo que sea $O(n)$.
 %\end{enumerate}
 
-\input{cheatsheet}
+%\input{cheatsheet}
 
 \end{enumerate}
 
